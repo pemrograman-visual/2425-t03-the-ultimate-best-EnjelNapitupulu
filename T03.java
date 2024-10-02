@@ -4,70 +4,74 @@
 import java.util.*;
 import java.lang.Math;
 
-public class  T03{
+public class T03 {
     private static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
-        String iSBN, judul, penulis, penerbit, format, ket, tUB, diskon;
-        int stok, tahun;
-        double harga, margin, rating, katDiskon;
+        String iSBN, tahunterbit, judul, penulis, penerbit, format, kategoridiskon, kategoribuku, kategori;
+        double minimummargin, rating, harga, diskon;
+        int stok;
 
+        kategori = "";
         do {
             iSBN = input.nextLine();
             if (iSBN.equals("---")) {
             } else {
                 judul = input.nextLine();
                 penulis = input.nextLine();
-                tahun = Integer.parseInt(input.nextLine());
+                tahunterbit = input.nextLine();
                 penerbit = input.nextLine();
+                if (penerbit.equals("---")) {
+                    penerbit = "---";
+                } else {
+                    penerbit = penerbit;
+                }
                 format = input.nextLine();
                 harga = Double.parseDouble(input.nextLine());
-                margin = Double.parseDouble(input.nextLine());
+                minimummargin = Double.parseDouble(input.nextLine());
+                if (minimummargin > 0) {
+                    kategoridiskon = "---";
+                } else {
+                    if (minimummargin < -(harga * 0.4)) {
+                        kategoridiskon = "Once in a lifetime";
+                    } else {
+                        if (minimummargin < -(harga * 0.2)) {
+                            kategoridiskon = "Never come twice";
+                        } else {
+                            kategoridiskon = "No regret";
+                        }
+                    }
+                }
                 stok = Integer.parseInt(input.nextLine());
                 rating = Double.parseDouble(input.nextLine());
-                if (rating >= 4.7) {
-                    ket = "Best Pick";
+                if (rating < 3.0) {
+                    kategori = "Low";
                 } else {
-                    if (rating >= 4.5) {
-                        ket = "Must Read";
+                    if (rating >= 3.0 && rating < 4.0) {
+                        kategori = "Average";
                     } else {
-                        if (rating >= 4.0) {
-                            ket = "Recomended";
+                        if (rating >= 4.0 && rating < 4.5) {
+                            kategori = "Recommended";
                         } else {
-                            if (rating >= 3.0) {
-                                ket = "Average";
+                            if (rating >= 4.5 && rating < 4.7) {
+                                kategori = "Must Read";
                             } else {
-                                ket = "Low";
+                                if (rating >= 4.7) {
+                                    kategori = "Best Pick";
+                                }
                             }
                         }
                     }
                 }
-            }
-            katDiskon = margin / harga * -1;
-            if (katDiskon >= 0.4) {
-                diskon = "Once in a lifetime";
-            } else {
-                if (katDiskon > 0.2) {
-                    diskon = "Never come twice";
+                if (kategoridiskon.equals("Once in a lifetime") && kategori.equals("Best Pick")) {
+                    kategoribuku = "The ultimate best";
                 } else {
-                    if (katDiskon > 0) {
-                        diskon = "No regret";
-                    } else {
-                        diskon = "---";
-                    }
+                    kategoribuku = "---";
                 }
+                System.out.println(iSBN + "|" + judul + "|" + penulis + "|" + tahunterbit + "|" + penerbit + "|" + format + "|" + harga + "|" + minimummargin + "|" + stok + "|" + rating + "|" + kategori + "|" + kategoridiskon + "|" + kategoribuku);
             }
-            if (ket.equals("Best Pick") && diskon.equals("Once in a lifetime")) {
-                tUB = "The Ultimate Best";
-            } else {
-                tUB = "---";
-            }
-            System.out.println(iSBN + "|" + judul + "|" + penulis + "|" + tahun + "|" + penerbit + "|" + format + "|" + toFixed(harga,2) + "|" + toFixed(margin,2) + "|" + stok + "|" + toFixed(rating,1) + "|" + ket + "|" + diskon + "|" + tUB);
         } while (!iSBN.equals("---"));
     }
-    
-    private static String toFixed(double value, int digits) {
-        return String.format("%." + digits + "f", value);
-    }
 }
+
 
